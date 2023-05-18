@@ -63,6 +63,25 @@ async function run() {
       res.send(result);
     });
 
+    // Update toy
+    app.patch("/toys/:id", async (req, res) => {
+      const id = req.params.id;
+      const toyInfo = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          ...toyInfo,
+        },
+      };
+      const result = await toys.updateOne(filter, updateDoc);
+      if (result.modifiedCount > 0) {
+        console.log("Successfully updated one document.");
+      } else {
+        console.log("No documents matched the query. Updated 0 documents.");
+      }
+      res.send(result);
+    });
+
     // Delete a toy
     app.delete("/toys/:id", async (req, res) => {
       const id = req.params.id;
