@@ -37,7 +37,7 @@ async function run() {
     });
 
     // Get specific user toy
-    app.get("/toys", async (req, res) => {
+    app.get("/my-toys", async (req, res) => {
       const userEmail = req.query.email;
       const query = { seller_email: userEmail };
       const cursor = toys.find(query);
@@ -60,6 +60,19 @@ async function run() {
         ...toyInfo,
       };
       const result = await toys.insertOne(doc);
+      res.send(result);
+    });
+
+    // Delete a toy
+    app.delete("/toys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toys.deleteOne(query);
+      if (result.deletedCount === 1) {
+        console.log("Successfully deleted one document.");
+      } else {
+        console.log("No documents matched the query. Deleted 0 documents.");
+      }
       res.send(result);
     });
 
