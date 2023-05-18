@@ -36,6 +36,15 @@ async function run() {
       res.send(result);
     });
 
+    // Get specific user toy
+    app.get("/toys", async (req, res) => {
+      const userEmail = req.query.email;
+      const query = { seller_email: userEmail };
+      const cursor = toys.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // Add a toy
     app.post("/toys", async (req, res) => {
       const toyInfo = req.body;
