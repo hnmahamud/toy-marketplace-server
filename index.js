@@ -49,10 +49,22 @@ async function run() {
     // Get specific user toy
     app.get("/my-toys", async (req, res) => {
       const userEmail = req.query.email;
+      const sortBy = req.query.sortBy;
       const query = { seller_email: userEmail };
-      const cursor = toys.find(query);
-      const result = await cursor.toArray();
-      res.send(result);
+
+      if (sortBy === "ascending") {
+        const cursor = toys.find(query).sort({ price: 1 });
+        const result = await cursor.toArray();
+        res.send(result);
+      } else if (sortBy === "descending") {
+        const cursor = toys.find(query).sort({ price: -1 });
+        const result = await cursor.toArray();
+        res.send(result);
+      } else {
+        const cursor = toys.find(query);
+        const result = await cursor.toArray();
+        res.send(result);
+      }
     });
 
     // Get specific toy by id
