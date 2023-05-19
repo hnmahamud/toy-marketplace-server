@@ -31,9 +31,18 @@ async function run() {
 
     // Get all toy
     app.get("/toys", async (req, res) => {
-      const cursor = toys.find({});
-      const result = await cursor.toArray();
+      const currentPage = parseInt(req.query.currentPage) || 0;
+      const itemsPerPage = parseInt(req.query.itemsPerPage) || 20;
+
+      const skip = currentPage * itemsPerPage;
+      const result = await toys.find().skip(skip).limit(itemsPerPage).toArray();
+
       res.send(result);
+    });
+
+    app.get("/totalToys", async (req, res) => {
+      const result = await toys.estimatedDocumentCount();
+      res.send({ totalToys: result });
     });
 
     // Get specific user toy
