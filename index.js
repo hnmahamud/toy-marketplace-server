@@ -43,7 +43,7 @@ async function run() {
     // Get total toys number
     app.get("/totalToys", async (req, res) => {
       const result = await toys.estimatedDocumentCount();
-      res.send({ totalToys: result });
+      res.send({ totalToysNumber: result });
     });
 
     // Get specific user toy
@@ -80,6 +80,15 @@ async function run() {
       const searchText = req.query.searchText;
       const searchRegex = new RegExp(searchText, "i");
       const result = await toys.find({ name: searchRegex }).toArray();
+      res.send(result);
+    });
+
+    // Get toys by category
+    app.get("/toys-subCat", async (req, res) => {
+      const subCat = req.query.subCat;
+      const query = { sub_category: subCat };
+      const cursor = toys.find(query);
+      const result = await cursor.toArray();
       res.send(result);
     });
 
