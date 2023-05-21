@@ -1,1 +1,13 @@
-# b7a11-toy-marketplace-server-side-hnmahamud
+## Installation
+
+For install dependency:
+
+```sh
+npm install
+```
+
+For run the project:
+
+```sh
+nodemon index.js
+```
